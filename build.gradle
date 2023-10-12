@@ -5,8 +5,8 @@ plugins {
     id "com.diffplug.spotless" version "6.12.0"
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
 
