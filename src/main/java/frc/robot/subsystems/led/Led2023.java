@@ -54,7 +54,7 @@ public class Led2023 extends SubsystemBase {
   private final SetThirdLeds setOneThird = new SetThirdLeds();
 
   /*
-   * Color blind preferred pallet includes White, Black, Red, Blue, Gold
+   * Color-blind preferred pallet includes White, Black, Red, Blue, Gold
    */
 
   public enum COLORS_467 {
@@ -148,7 +148,7 @@ public class Led2023 extends SubsystemBase {
     ColorScheme colorScheme;
     colorScheme = getColorScheme();
 
-    // Clears leds if colorSceme changed
+    // Clears leds if colorScheme changed
     if (colorScheme != lastColorScheme) {
       set(COLORS_467.Black);
       lastColorScheme = colorScheme;
@@ -163,7 +163,7 @@ public class Led2023 extends SubsystemBase {
       armCMDsTimer.reset();
     }
 
-    // Check if battery is low
+    // Check if the battery is low
     if (USE_BATTERY_CHECK && RobotController.getBatteryVoltage() <= BATTER_MIN_VOLTAGE) {
       return ColorScheme.BATTERY_LOW;
     }
@@ -207,7 +207,7 @@ public class Led2023 extends SubsystemBase {
       return ColorScheme.CALIBRATING;
     }
 
-    // Sets rainbow for 5 secs after calibrating
+    // Sets rainbow for five secs after calibrating
     if ((arm.isCalibrated() || !CHECK_ARM_CALIBRATION)
         && !defaultTimer.hasElapsed(RAINBOW_TIME_AFTER_CALIBRATION + 0.02)
         && DriverStation.isTeleopEnabled()
@@ -231,7 +231,7 @@ public class Led2023 extends SubsystemBase {
       }
     }
 
-    // When arm is scoring mid node
+    // When arm is scoring mid-node
     if (arm.getCurrentCommand() instanceof ArmScoreMidNodeCMD && !armCMDsTimer.hasElapsed(2)) {
       armCMDsTimer.start();
       if (effector.wantsCube() || (effector.haveCube() && !effector.haveCone())) {
@@ -251,13 +251,13 @@ public class Led2023 extends SubsystemBase {
       }
     }
 
-    // When picking up from shelf
+    // When picking up game pieces from shelf
     if (arm.getCurrentCommand() instanceof ArmShelfCMD && !armCMDsTimer.hasElapsed(2)) {
       armCMDsTimer.start();
       return ColorScheme.SHELF;
     }
 
-    // When picking up from floor
+    // When picking up game pieces from the floor
     if (arm.getCurrentCommand() instanceof ArmFloorCMD && !armCMDsTimer.hasElapsed(2)) {
       armCMDsTimer.start();
       return ColorScheme.FLOOR;
