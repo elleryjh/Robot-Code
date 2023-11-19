@@ -150,15 +150,16 @@ public class Led2023 extends SubsystemBase {
       setLeds.set(COLORS_467.Black);
       lastColorScheme = colorScheme;
     }
+    // reset timer after arm cmd completes
+    if (!isArmCommandRunning(arm.getCurrentCommand())) {
+      armCMDsTimer.reset();
+    }
+
     applyColorScheme(colorScheme);
     setLeds.sendData();
   }
 
   public ColorScheme getColorScheme() {
-    // reset timer after arm cmd completes
-    if (!isArmCommandRunning(arm.getCurrentCommand())) {
-      armCMDsTimer.reset();
-    }
 
     // Check if the battery is low
     if (USE_BATTERY_CHECK && RobotController.getBatteryVoltage() <= BATTER_MIN_VOLTAGE) {
