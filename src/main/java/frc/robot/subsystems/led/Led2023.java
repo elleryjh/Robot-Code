@@ -41,6 +41,8 @@ public class Led2023 extends SubsystemBase {
   private final Arm arm;
   private final Drive drive;
 
+  private final SetLeds setLeds = new SetLeds();
+
   private final VictoryLeds balanceVictoryLeds = new VictoryLeds(COLORS_467.Blue, COLORS_467.Gold);
   private final VictoryLeds scoreVictoryLeds =
       new VictoryLeds(COLORS_467.Yellow, COLORS_467.Purple);
@@ -145,11 +147,11 @@ public class Led2023 extends SubsystemBase {
 
     // Clears leds if colorScheme changed
     if (colorScheme != lastColorScheme) {
-      set(COLORS_467.Black);
+      setLeds.set(COLORS_467.Black);
       lastColorScheme = colorScheme;
     }
     applyColorScheme(colorScheme);
-    sendData();
+    setLeds.sendData();
   }
 
   public ColorScheme getColorScheme() {
@@ -316,10 +318,10 @@ public class Led2023 extends SubsystemBase {
   public void applyColorScheme(ColorScheme colorScheme) {
     switch (colorScheme) {
       case BATTERY_LOW:
-        set(BATTERY_LOW_COLOR);
+        setLeds.set(BATTERY_LOW_COLOR);
         break;
       case ARM_UNCALIBRATED:
-        set(ARM_UNCALIBRATED_COLOR);
+        setLeds.set(ARM_UNCALIBRATED_COLOR);
         break;
       case CONE_HIGH:
         setOneThird.set(COLORS_467.Yellow, 3);
@@ -360,10 +362,10 @@ public class Led2023 extends SubsystemBase {
         colorPatterns.setColorMovingDown(COLORS_467.Black.getColor(), COLORS_467.Purple.getColor());
         break;
       case WANT_CONE:
-        set(COLORS_467.Yellow);
+        setLeds.set(COLORS_467.Yellow);
         break;
       case WANT_CUBE:
-        set(COLORS_467.Purple);
+        setLeds.set(COLORS_467.Purple);
         break;
       case INTAKE_UNKNOWN:
         colorPatterns.setColorMovingUpTwoClr(
@@ -383,20 +385,20 @@ public class Led2023 extends SubsystemBase {
         break;
       case SHELF:
         if (effector.wantsCone()) {
-          setTop(COLORS_467.Yellow);
-          setBottom(COLORS_467.Black);
+          setLeds.setTop(COLORS_467.Yellow);
+          setLeds.setBottom(COLORS_467.Black);
         } else {
-          setTop(COLORS_467.Purple);
-          setBottom(COLORS_467.Black);
+          setLeds.setTop(COLORS_467.Purple);
+          setLeds.setBottom(COLORS_467.Black);
         }
         break;
       case FLOOR:
         if (effector.wantsCone()) {
-          setBottom(COLORS_467.Yellow);
-          setTop(COLORS_467.Black);
+          setLeds.setBottom(COLORS_467.Yellow);
+          setLeds.setTop(COLORS_467.Black);
         } else {
-          setBottom(COLORS_467.Purple);
-          setTop(COLORS_467.Black);
+          setLeds.setBottom(COLORS_467.Purple);
+          setLeds.setTop(COLORS_467.Black);
         }
         break;
       case BALANCE_VICTORY:
@@ -409,58 +411,6 @@ public class Led2023 extends SubsystemBase {
         rainbowLed.setRainbowMovingDownSecondInv();
         break;
     }
-  }
-
-  public void sendData() {
-    ledStrip.update();
-  }
-
-  public void set(Color color) {
-    setTop(color);
-    setBottom(color);
-  }
-
-  public void setTop(Color color) {
-    for (int i = 0; i < RobotConstants.get().led2023LedCount() / 2; i++) {
-      ledStrip.setLED(i, color);
-    }
-  }
-
-  public void setBottom(Color color) {
-    for (int i = RobotConstants.get().led2023LedCount() / 2;
-        i < RobotConstants.get().led2023LedCount();
-        i++) {
-      ledStrip.setLED(i, color);
-    }
-  }
-
-  public void set(COLORS_467 color) {
-    setTop(color);
-    setBottom(color);
-  }
-
-  public void setTop(COLORS_467 color) {
-    for (int i = RobotConstants.get().led2023LedCount() / 2;
-        i < RobotConstants.get().led2023LedCount();
-        i++) {
-      ledStrip.setRGB(i, color.red, color.green, color.blue);
-    }
-  }
-
-  public void setBottom(COLORS_467 color) {
-    for (int i = 0; i < RobotConstants.get().led2023LedCount() / 2; i++) {
-      ledStrip.setRGB(i, color.red, color.green, color.blue);
-    }
-  }
-
-  public void setRGB(int index, int r, int g, int b) {
-    ledStrip.setLeftRGB(index, r, g, b);
-    ledStrip.setRightRGB(index, r, g, b);
-  }
-
-  public void setLED(int index, Color color) {
-    ledStrip.setLeftLED(index, color);
-    ledStrip.setRightLED(index, color);
   }
 
   private class Rainbows {
