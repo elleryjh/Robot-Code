@@ -20,6 +20,22 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.effector.Effector;
 import org.littletonrobotics.junction.Logger;
 
+
+/**
+ * The Led2023 class extends the SubsystemBase class which represents a physical part (in this case LED lights 2023) of the robot.
+ * This class is used for LED lights 2023 control providing the following functionalities:
+ * 1. Creation and initialization of the LED strip.
+ * 2. Reset of Led-related timers.
+ * 3. Sending data to the logger.
+ * 4. Checking conditions if arm command is running.
+ * 5. Color scheme management (change, retrieval, and application) based on various conditions.
+ * 6. Definition of color codes and requirements for COLOR_467 and ColorScheme.
+ * 7. Creation and managing methods for manipulations associated with Balance, Score, Rainbow, and Pattern.
+ *
+ * Note: The color scheme is adjusted based on different conditions associated with the robot's subsystems
+ * including the battery state, the calibration status of the arm, the robot's mode (Autonomous or
+ * Teleop), etc.
+ */
 public class Led2023 extends SubsystemBase {
   public DoubleLEDStrip ledStrip;
 
@@ -242,9 +258,9 @@ public class Led2023 extends SubsystemBase {
     if (arm.getCurrentCommand() instanceof ArmScoreMidNodeCMD && !armCMDsTimer.hasElapsed(2)) {
       armCMDsTimer.start();
       if (effector.wantsCube() || (effector.haveCube() && !effector.haveCone())) {
-        return ColorScheme.CUBE_HIGH;
+        return ColorScheme.CUBE_MID;
       } else {
-        return ColorScheme.CONE_HIGH;
+        return ColorScheme.CONE_MID;
       }
     }
 
