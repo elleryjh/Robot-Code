@@ -6,13 +6,8 @@ import frc.lib.leds.LEDManager;
 import frc.robot.RobotConstants;
 
 public class SetLeds {
-
   DoubleLEDStrip ledStrip =
       LEDManager.getInstance().createDoubleStrip(RobotConstants.get().led2023LedCount(), false);
-
-  public void sendData() {
-    ledStrip.update();
-  }
 
   public void set(Color color) {
     setTop(color);

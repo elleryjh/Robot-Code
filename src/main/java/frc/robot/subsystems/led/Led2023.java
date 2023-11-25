@@ -18,6 +18,7 @@ import frc.robot.commands.effector.ReleaseCMD;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.effector.Effector;
+import org.littletonrobotics.junction.Logger;
 
 public class Led2023 extends SubsystemBase {
   public DoubleLEDStrip ledStrip;
@@ -40,7 +41,7 @@ public class Led2023 extends SubsystemBase {
   private final Effector effector;
   private final Arm arm;
   private final Drive drive;
-
+  private final Logger logger = Logger.getInstance();
   private final SetLeds setLeds = new SetLeds();
 
   private final VictoryLeds balanceVictoryLeds = new VictoryLeds(COLORS_467.Blue, COLORS_467.Gold);
@@ -132,6 +133,14 @@ public class Led2023 extends SubsystemBase {
     balanceTimer.reset();
   }
 
+  public void sendData() {
+    for (int i = 0; i < RobotConstants.get().led2023LedCount(); i++) {
+      logger.recordOutput("Leds/LEDColor/" + i, ledStrip.getLED(i).toString());
+    }
+    logger.recordOutput("Leds/ColorScheme", getColorScheme().toString());
+    ledStrip.update();
+  }
+
   private boolean isArmCommandRunning(Command command) {
     return command instanceof ArmScoreHighNodeCMD
         || command instanceof ArmScoreMidNodeCMD
@@ -156,7 +165,7 @@ public class Led2023 extends SubsystemBase {
     }
 
     applyColorScheme(colorScheme);
-    setLeds.sendData();
+    sendData();
   }
 
   public ColorScheme getColorScheme() {
