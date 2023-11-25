@@ -242,9 +242,9 @@ public class Led2023 extends SubsystemBase {
     if (arm.getCurrentCommand() instanceof ArmScoreMidNodeCMD && !armCMDsTimer.hasElapsed(2)) {
       armCMDsTimer.start();
       if (effector.wantsCube() || (effector.haveCube() && !effector.haveCone())) {
-        return ColorScheme.CUBE_HIGH;
+        return ColorScheme.CUBE_MID;
       } else {
-        return ColorScheme.CONE_HIGH;
+        return ColorScheme.CONE_MID;
       }
     }
 
