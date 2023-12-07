@@ -17,7 +17,7 @@ public class ArmDropCMD extends SequentialCommandGroup {
   }
 
   private class InternalArmDropCMD extends Command {
-    private static final double ROTATE_DROP_METERS = 0.025;
+    private static final double ROTATE_DROP_METERS = 0.017;
     private Arm arm;
     private Supplier<Boolean> haveCone;
     private Supplier<Boolean> wantsCone;
