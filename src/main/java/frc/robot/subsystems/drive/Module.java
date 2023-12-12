@@ -24,7 +24,7 @@ public class Module {
           .moduleTurnFB()
           .getProfiledPIDController(new TrapezoidProfile.Constraints(550.6, 7585));
 
-  private final double wheelRadius = (RobotConstants.get().moduleWheelDiameter() / 2);
+  private double lastTurnVelocity = 0.0;
 
   public Module(ModuleIO io, int index) {
     this.io = io;
@@ -36,8 +36,9 @@ public class Module {
   }
 
   public void periodic() {
+    this.lastTurnVelocity = inputs.turnVelocityRadPerSec;
     io.updateInputs(inputs);
-    Logger.getInstance().processInputs("Drive/Module" + index, inputs);
+    Logger.processInputs("Drive/Module" + index, inputs);
   }
 
   public SwerveModuleState runSetpoint(SwerveModuleState state, boolean isStationary) {
@@ -53,18 +54,29 @@ public class Module {
     // Update velocity based on turn error
     optimizedState.speedMetersPerSecond *= Math.cos(turnFB.getPositionError());
 
-    // Run drive controller
-    double velocityRadPerSec = optimizedState.speedMetersPerSecond / wheelRadius;
-    io.setDriveVoltage(driveFF.calculate(velocityRadPerSec));
+    io.setDriveVoltage(driveFF.calculate(optimizedState.speedMetersPerSecond));
 
     return optimizedState;
   }
 
-  public void runCharacterization(double volts) {
+  public void runDriveCharacterization(double volts) {
     io.setTurnVoltage(
         turnFB.calculate(getAngle().getRadians(), 0.0)
             + turnFB.calculate(turnFB.getSetpoint().velocity));
     io.setDriveVoltage(volts);
+  }
+
+  public void runTurnCharacterization(double volts) {
+    io.setTurnVoltage(volts);
+    io.setDriveVoltage(0);
+  }
+
+  public double getTurnVelocity() {
+    return inputs.turnVelocityRadPerSec;
+  }
+
+  public double getTurnAcceleration() {
+    return (inputs.turnVelocityRadPerSec - this.lastTurnVelocity) / 0.02;
   }
 
   public void stop() {
@@ -81,23 +93,11 @@ public class Module {
     return new Rotation2d(MathUtil.angleModulus(inputs.turnPositionAbsoluteRad));
   }
 
-  public double getPositionMeters() {
-    return inputs.drivePositionRad * wheelRadius;
-  }
-
-  public double getVelocityMetersPerSec() {
-    return inputs.driveVelocityRadPerSec * wheelRadius;
-  }
-
   public SwerveModulePosition getPosition() {
-    return new SwerveModulePosition(getPositionMeters(), getAngle());
+    return new SwerveModulePosition(inputs.drivePositionMeters, getAngle());
   }
 
   public SwerveModuleState getState() {
-    return new SwerveModuleState(getVelocityMetersPerSec(), getAngle());
-  }
-
-  public double getCharacterizationVelocity() {
-    return inputs.driveVelocityRadPerSec;
+    return new SwerveModuleState(inputs.driveVelocityMetersPerSec, getAngle());
   }
 }

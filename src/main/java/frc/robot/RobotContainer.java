@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
@@ -21,8 +22,8 @@ import frc.lib.characterization.FeedForwardCharacterization;
 import frc.lib.characterization.FeedForwardCharacterization.FeedForwardCharacterizationData;
 import frc.lib.io.gyro3d.IMUIO;
 import frc.lib.io.gyro3d.IMUPigeon2;
-import frc.lib.io.newvision.VisionIO;
-import frc.lib.io.newvision.VisionIOAprilTag;
+import frc.lib.io.vision.Vision;
+import frc.lib.io.vision.VisionIOPhotonVision;
 import frc.lib.leds.LEDManager;
 import frc.lib.utils.AllianceFlipUtil;
 import frc.robot.commands.arm.ArmCalibrateCMD;
@@ -76,7 +77,10 @@ public class RobotContainer {
   private final Effector effector;
   private Led2023 led2023;
   private final Arm arm;
+  private Vision vision;
   private boolean isRobotOriented = true; // Workaround, change if needed
+
+  private DriverStation.Alliance lastAlliance = DriverStation.Alliance.Blue;
 
   // Controller
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -101,16 +105,17 @@ public class RobotContainer {
                 new Transform3d(
                     new Translation3d(2 * 0.01, -12 * 0.01 - Units.inchesToMeters(2.0), 42 * 0.01),
                     new Rotation3d(0, 0, -0.5 * Math.PI));
+            vision =
+                new Vision(
+                    List.of(new VisionIOPhotonVision("front"), new VisionIOPhotonVision("right")),
+                    List.of(front, right));
             drive =
                 new Drive(
                     new IMUPigeon2(17),
                     new ModuleIOSparkMAX(3, 4, 13, 0),
                     new ModuleIOSparkMAX(5, 6, 14, 1),
                     new ModuleIOSparkMAX(1, 2, 15, 2),
-                    new ModuleIOSparkMAX(7, 8, 16, 3),
-                    List.of(
-                        new VisionIOAprilTag("front", front, FieldConstants.aprilTags),
-                        new VisionIOAprilTag("right", right, FieldConstants.aprilTags)));
+                    new ModuleIOSparkMAX(7, 8, 16, 3));
             arm =
                 new Arm(
                     new ArmIOPhysical(
@@ -130,8 +135,7 @@ public class RobotContainer {
                     new ModuleIO() {},
                     new ModuleIO() {},
                     new ModuleIO() {},
-                    new ModuleIO() {},
-                    List.of(new VisionIO() {}));
+                    new ModuleIO() {});
             arm = new Arm(new ArmIO() {});
             effector = new Effector(new EffectorIO() {});
           }
@@ -142,8 +146,7 @@ public class RobotContainer {
                     new ModuleIO() {},
                     new ModuleIO() {},
                     new ModuleIO() {},
-                    new ModuleIO() {},
-                    List.of(new VisionIO() {}));
+                    new ModuleIO() {});
             arm = new Arm(new ArmIO() {});
             effector = new Effector(new EffectorIO() {});
           }
@@ -159,8 +162,7 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim(),
-                new ModuleIOSim(),
-                List.of(new VisionIO() {}));
+                new ModuleIOSim());
         arm = new Arm(new ArmIO() {});
         effector = new Effector(new EffectorIO() {});
       }
@@ -174,8 +176,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {},
-                new ModuleIO() {},
-                List.of(new VisionIO() {}));
+                new ModuleIO() {});
         arm = new Arm(new ArmIO() {});
         effector = new Effector(new EffectorIO() {});
       }
@@ -228,8 +229,9 @@ public class RobotContainer {
                     drive,
                     true,
                     new FeedForwardCharacterizationData("drive"),
-                    drive::runCharacterizationVolts,
-                    drive::getCharacterizationVelocity))
+                    drive::runDriveCharacterizationVolts,
+                    drive::getDriveCharacterizationVelocity,
+                    drive::getDriveCharacterizationAcceleration))
             .andThen(() -> configureButtonBindings()));
     // autoChooser.addOption("AutoCommand", new AutoCommand(subsystem));
 
@@ -297,14 +299,10 @@ public class RobotContainer {
     operatorController.a().onTrue(new ArmScoreLowNodeCMD(arm));
     operatorController.b().onTrue(new ArmScoreMidNodeCMD(arm, effector::wantsCone));
     operatorController.y().onTrue(new ArmScoreHighNodeCMD(arm, effector::wantsCone));
-    Logger.getInstance()
-        .recordOutput("CustomController/LowButton", operatorController.a().getAsBoolean());
-    Logger.getInstance()
-        .recordOutput("CustomController/MiddleButton", operatorController.b().getAsBoolean());
-    Logger.getInstance()
-        .recordOutput("CustomController/HighButton", operatorController.y().getAsBoolean());
-    Logger.getInstance()
-        .recordOutput("CustomController/HomeButton", operatorController.x().getAsBoolean());
+    Logger.recordOutput("CustomController/LowButton", operatorController.a().getAsBoolean());
+    Logger.recordOutput("CustomController/MiddleButton", operatorController.b().getAsBoolean());
+    Logger.recordOutput("CustomController/HighButton", operatorController.y().getAsBoolean());
+    Logger.recordOutput("CustomController/HomeButton", operatorController.x().getAsBoolean());
 
     // Home will be for movement
     operatorController.x().onTrue(new ArmHomeCMD(arm, effector::wantsCone));
@@ -321,12 +319,10 @@ public class RobotContainer {
     operatorController.rightStick().onTrue(new ArmStopCMD(arm));
     operatorController.leftBumper().onTrue(new ArmShelfCMD(arm, effector));
     operatorController.rightBumper().onTrue(new ArmFloorCMD(arm, effector));
-    Logger.getInstance()
-        .recordOutput(
-            "CustomController/FloorButton", operatorController.rightBumper().getAsBoolean());
-    Logger.getInstance()
-        .recordOutput(
-            "CustomController/ShelfButton", operatorController.leftBumper().getAsBoolean());
+    Logger.recordOutput(
+        "CustomController/FloorButton", operatorController.rightBumper().getAsBoolean());
+    Logger.recordOutput(
+        "CustomController/ShelfButton", operatorController.leftBumper().getAsBoolean());
 
     // Auto grid align
     driverController.rightTrigger().whileTrue(new NewAlignToNode(drive, effector));
@@ -348,7 +344,6 @@ public class RobotContainer {
     } else {
       new WantConeCMD(effector).schedule();
     }
-    Logger.getInstance()
-        .recordOutput("CustomController/WantSwitch", operatorController.back().getAsBoolean());
+    Logger.recordOutput("CustomController/WantSwitch", operatorController.back().getAsBoolean());
   }
 }

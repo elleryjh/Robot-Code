@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotController;
@@ -30,15 +31,20 @@ public class ModuleIOSparkMAX implements ModuleIO {
     turnEncoder = turnMotor.getEncoder();
     turnEncoderAbsolute = new WPI_CANCoder(turnAbsEncoderId);
 
-    // Convert rotations to radians
+    // Convert rotations to meters
+    double rotsToMeters =
+        Units.rotationsToRadians(1)
+            * (RobotConstants.get().moduleWheelDiameter() / 2)
+            * RobotConstants.get().moduleDriveGearRatio().getRotationsPerInput();
     double rotsToRads =
         Units.rotationsToRadians(1)
-            * RobotConstants.get().moduleDriveGearRatio().getRotationsPerInput();
-    driveEncoder.setPositionConversionFactor(rotsToRads);
+            * RobotConstants.get().moduleTurnGearRatio().getRotationsPerInput();
+
+    driveEncoder.setPositionConversionFactor(rotsToMeters);
     turnEncoder.setPositionConversionFactor(rotsToRads);
 
-    // Convert rotations per minute to radians per second
-    driveEncoder.setVelocityConversionFactor(rotsToRads / 60);
+    // Convert rotations per minute to meters per second
+    driveEncoder.setVelocityConversionFactor(rotsToMeters / 60);
     turnEncoder.setVelocityConversionFactor(rotsToRads / 60);
 
     // Invert motors
@@ -51,8 +57,8 @@ public class ModuleIOSparkMAX implements ModuleIO {
     driveMotor.enableVoltageCompensation(12);
     turnMotor.enableVoltageCompensation(12);
 
-    driveMotor.setSmartCurrentLimit(80);
-    turnMotor.setSmartCurrentLimit(80);
+    driveMotor.setSmartCurrentLimit(40);
+    turnMotor.setSmartCurrentLimit(30);
 
     turnEncoderAbsolute.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
 
@@ -61,8 +67,8 @@ public class ModuleIOSparkMAX implements ModuleIO {
 
   @Override
   public void updateInputs(ModuleIOInputs inputs) {
-    inputs.driveVelocityRadPerSec = driveEncoder.getVelocity();
-    inputs.drivePositionRad = driveEncoder.getPosition();
+    inputs.driveVelocityMetersPerSec = driveEncoder.getVelocity();
+    inputs.drivePositionMeters = driveEncoder.getPosition();
     inputs.driveAppliedVolts = driveMotor.getAppliedOutput() * RobotController.getBatteryVoltage();
     inputs.driveCurrentAmps = new double[] {driveMotor.getOutputCurrent()};
     inputs.turnVelocityRadPerSec = turnEncoder.getVelocity();
@@ -72,9 +78,10 @@ public class ModuleIOSparkMAX implements ModuleIO {
       if (++resetCount >= 500) {
         resetCount = 0;
         turnEncoder.setPosition(
-            Rotation2d.fromDegrees(turnEncoderAbsolute.getAbsolutePosition())
-                .minus(RobotConstants.get().absoluteAngleOffset()[index])
-                .getRadians());
+            MathUtil.angleModulus(
+                Rotation2d.fromDegrees(turnEncoderAbsolute.getAbsolutePosition())
+                    .minus(RobotConstants.get().absoluteAngleOffset()[index])
+                    .getRadians()));
       }
     } else {
       resetCount = 0;
