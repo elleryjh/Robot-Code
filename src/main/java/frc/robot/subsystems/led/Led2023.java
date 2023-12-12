@@ -55,7 +55,6 @@ public class Led2023 extends SubsystemBase {
   private final Effector effector;
   private final Arm arm;
   private final Drive drive;
-  private final Logger logger = Logger.getInstance();
   private final SetLeds setLeds = new SetLeds();
 
   private final VictoryLeds balanceVictoryLeds = new VictoryLeds(COLORS_467.Blue, COLORS_467.Gold);
@@ -149,9 +148,9 @@ public class Led2023 extends SubsystemBase {
 
   public void sendData() {
     for (int i = 0; i < RobotConstants.get().led2023LedCount(); i++) {
-      logger.recordOutput("Leds/LEDColor/" + i, ledStrip.getLED(i).toString());
+      Logger.recordOutput("Leds/LEDColor/" + i, ledStrip.getLED(i).toString());
     }
-    logger.recordOutput("Leds/ColorScheme", getColorScheme().toString());
+    Logger.recordOutput("Leds/ColorScheme", getColorScheme().toString());
     ledStrip.update();
   }
 
