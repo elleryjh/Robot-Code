@@ -81,5 +81,5 @@ public interface Constants {
 
   public int ledChannel();
 
-  public int led2023LedCount();
+  public int led2024LedCount();
 }

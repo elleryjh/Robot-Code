@@ -12,23 +12,23 @@ public class Patterns {
 
   public void setColorMovingDown(Color fgColor, Color bgColor) {
     if (purpleTimer.hasElapsed(
-        SHOOTING_TIMER_SPEED * (RobotConstants.get().led2023LedCount() + 2))) {
+        SHOOTING_TIMER_SPEED * (RobotConstants.get().led2024LedCount() + 2))) {
       purpleTimer.reset();
     }
 
-    for (int i = 0; i < RobotConstants.get().led2023LedCount(); i++) {
+    for (int i = 0; i < RobotConstants.get().led2024LedCount(); i++) {
       purpleTimerSet(fgColor, bgColor, i, i);
     }
   }
 
   public void setColorMovingUp(Color fgColor, Color bgColor) {
     if (purpleTimer.hasElapsed(
-        SHOOTING_TIMER_SPEED * (RobotConstants.get().led2023LedCount() + 2))) {
+        SHOOTING_TIMER_SPEED * (RobotConstants.get().led2024LedCount() + 2))) {
       purpleTimer.reset();
     }
 
-    for (int i = 0; i < RobotConstants.get().led2023LedCount(); i++) {
-      int j = RobotConstants.get().led2023LedCount() - i - 1;
+    for (int i = 0; i < RobotConstants.get().led2024LedCount(); i++) {
+      int j = RobotConstants.get().led2024LedCount() - i - 1;
       purpleTimerSet(fgColor, bgColor, i, j);
     }
   }
@@ -55,17 +55,17 @@ public class Patterns {
 
   public void setColorMovingUpTwoClr(Color topColor, Color bottomColor) {
     if (purpleTimer.hasElapsed(
-        SHOOTING_TIMER_SPEED * (RobotConstants.get().led2023LedCount() + 2))) {
+        SHOOTING_TIMER_SPEED * (RobotConstants.get().led2024LedCount() + 2))) {
       purpleTimer.reset();
     }
 
-    for (int i = RobotConstants.get().led2023LedCount() - 1; i >= 0; i--) {
-      int j = RobotConstants.get().led2023LedCount() - 1 - i;
+    for (int i = RobotConstants.get().led2024LedCount() - 1; i >= 0; i--) {
+      int j = RobotConstants.get().led2024LedCount() - 1 - i;
       if (purpleTimer.hasElapsed(SHOOTING_TIMER_SPEED * i)) {
         double timeUntilOff = Math.max(0, (SHOOTING_TIMER_SPEED * (i + 2)) - purpleTimer.get());
         double brightness = (255 * timeUntilOff);
         Color currentColor =
-            j >= RobotConstants.get().led2023LedCount() / 2 ? topColor : bottomColor;
+            j >= RobotConstants.get().led2024LedCount() / 2 ? topColor : bottomColor;
 
         if (brightness == 0) {
           ledStrip.setLED(j, currentColor);
@@ -79,14 +79,14 @@ public class Patterns {
         }
       } else {
         Color currentColor =
-            j >= RobotConstants.get().led2023LedCount() / 2 ? topColor : bottomColor;
+            j >= RobotConstants.get().led2024LedCount() / 2 ? topColor : bottomColor;
         ledStrip.setLED(j, currentColor);
       }
     }
   }
 
   public void setBlinkColors(
-      Led2023.COLORS_467 topColor, Led2023.COLORS_467 bottomColor, Color bgColor) {
+      Led2024.COLORS_467 topColor, Led2024.COLORS_467 bottomColor, Color bgColor) {
 
     if (purpleTimer.hasElapsed(0.6)) {
       purpleTimer.reset();
@@ -101,24 +101,24 @@ public class Patterns {
 
   public void setColorMovingDownTwoClr(Color topColor, Color bottomColor) {
     if (purpleTimer.hasElapsed(
-        SHOOTING_TIMER_SPEED * (RobotConstants.get().led2023LedCount() + 2))) {
+        SHOOTING_TIMER_SPEED * (RobotConstants.get().led2024LedCount() + 2))) {
       purpleTimer.reset();
     }
 
-    for (int i = 0; i < RobotConstants.get().led2023LedCount(); i++) {
+    for (int i = 0; i < RobotConstants.get().led2024LedCount(); i++) {
       if (purpleTimer.hasElapsed(SHOOTING_TIMER_SPEED * i)) {
         double timeUntilOff = Math.max(0, (SHOOTING_TIMER_SPEED * (i + 2)) - purpleTimer.get());
         double brightness = (255 * timeUntilOff);
 
         if (brightness == 0) {
-          if (i < RobotConstants.get().led2023LedCount() / 2) {
+          if (i < RobotConstants.get().led2024LedCount() / 2) {
             ledStrip.setLED(i, topColor);
           } else {
             ledStrip.setLED(i, bottomColor);
           }
 
         } else {
-          if (i < RobotConstants.get().led2023LedCount() / 2) {
+          if (i < RobotConstants.get().led2024LedCount() / 2) {
             ledStrip.setRGB(
                 i,
                 (int) (topColor.red * brightness),
@@ -133,7 +133,7 @@ public class Patterns {
           }
         }
       } else {
-        if (i < RobotConstants.get().led2023LedCount() / 2) {
+        if (i < RobotConstants.get().led2024LedCount() / 2) {
           ledStrip.setLED(i, topColor);
         } else {
           ledStrip.setLED(i, bottomColor);

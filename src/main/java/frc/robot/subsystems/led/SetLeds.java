@@ -7,7 +7,7 @@ import frc.robot.RobotConstants;
 
 public class SetLeds {
   DoubleLEDStrip ledStrip =
-      LEDManager.getInstance().createDoubleStrip(RobotConstants.get().led2023LedCount(), false);
+      LEDManager.getInstance().createDoubleStrip(RobotConstants.get().led2024LedCount(), false);
 
   public void set(Color color) {
     setTop(color);
@@ -15,34 +15,34 @@ public class SetLeds {
   }
 
   public void setTop(Color color) {
-    for (int i = 0; i < RobotConstants.get().led2023LedCount() / 2; i++) {
+    for (int i = 0; i < RobotConstants.get().led2024LedCount() / 2; i++) {
       ledStrip.setLED(i, color);
     }
   }
 
   public void setBottom(Color color) {
-    for (int i = RobotConstants.get().led2023LedCount() / 2;
-        i < RobotConstants.get().led2023LedCount();
+    for (int i = RobotConstants.get().led2024LedCount() / 2;
+        i < RobotConstants.get().led2024LedCount();
         i++) {
       ledStrip.setLED(i, color);
     }
   }
 
-  public void set(Led2023.COLORS_467 color) {
+  public void set(Led2024.COLORS_467 color) {
     setTop(color);
     setBottom(color);
   }
 
-  public void setTop(Led2023.COLORS_467 color) {
-    for (int i = RobotConstants.get().led2023LedCount() / 2;
-        i < RobotConstants.get().led2023LedCount();
+  public void setTop(Led2024.COLORS_467 color) {
+    for (int i = RobotConstants.get().led2024LedCount() / 2;
+        i < RobotConstants.get().led2024LedCount();
         i++) {
       ledStrip.setRGB(i, color.red, color.green, color.blue);
     }
   }
 
-  public void setBottom(Led2023.COLORS_467 color) {
-    for (int i = 0; i < RobotConstants.get().led2023LedCount() / 2; i++) {
+  public void setBottom(Led2024.COLORS_467 color) {
+    for (int i = 0; i < RobotConstants.get().led2024LedCount() / 2; i++) {
       ledStrip.setRGB(i, color.red, color.green, color.blue);
     }
   }

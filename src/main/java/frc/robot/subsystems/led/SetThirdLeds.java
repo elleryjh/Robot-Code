@@ -4,13 +4,13 @@ import frc.robot.RobotConstants;
 
 public class SetThirdLeds {
   private static final int topStart = 0;
-  private static final int topEndAndMidStart = (int) (RobotConstants.get().led2023LedCount() / 3);
+  private static final int topEndAndMidStart = (int) (RobotConstants.get().led2024LedCount() / 3);
   private static final int midEndAndBottomStart =
-      (int) (RobotConstants.get().led2023LedCount() - (RobotConstants.get().led2023LedCount() / 3));
-  private static final int bottomEnd = (RobotConstants.get().led2023LedCount());
+      (int) (RobotConstants.get().led2024LedCount() - (RobotConstants.get().led2024LedCount() / 3));
+  private static final int bottomEnd = (RobotConstants.get().led2024LedCount());
   SetLeds ledStrip;
 
-  public void set(Led2023.COLORS_467 color, int preSet) {
+  public void set(Led2024.COLORS_467 color, int preSet) {
     // preSet = 1, 2, or 3. sets top 1/3, mid 1/3, or lower 1/3
     int start;
     int end;

@@ -127,7 +127,7 @@ public class SimBotConstants implements Constants {
   }
 
   @Override
-  public int led2023LedCount() {
+  public int led2024LedCount() {
     return 0;
   }
 }

@@ -26,7 +26,7 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSparkMAX;
-import frc.robot.subsystems.led.Led2023;
+import frc.robot.subsystems.led.Led2024;
 import java.util.List;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -40,7 +40,7 @@ public class RobotContainer {
   // Subsystems
   // private final Subsystem subsystem;
   private Drive drive;
-  private Led2023 led2023;
+  private Led2024 led2024;
   private Vision vision;
   private boolean isRobotOriented = true; // Workaround, change if needed
 
@@ -125,7 +125,7 @@ public class RobotContainer {
       }
     }
 
-    led2023 = new Led2023();
+    led2024 = new Led2024();
     LEDManager.getInstance().init(RobotConstants.get().ledChannel());
 
     // Set up auto routines
@@ -179,7 +179,7 @@ public class RobotContainer {
         .pov(-1)
         .whileFalse(new DriveWithDpad(drive, () -> driverController.getHID().getPOV()));
 
-    led2023.setDefaultCommand(new LedRainbowCMD(led2023).ignoringDisable(true));
+    led2024.setDefaultCommand(new LedRainbowCMD(led2024).ignoringDisable(true));
   }
 
   /**

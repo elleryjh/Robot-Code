@@ -11,8 +11,8 @@ import frc.robot.RobotConstants;
 import org.littletonrobotics.junction.Logger;
 
 /**
- * The Led2023 class extends the SubsystemBase class which represents a physical part (in this case
- * LED lights 2023) of the robot. This class is used for LED lights 2023 control providing the
+ * The Led2024 class extends the SubsystemBase class which represents a physical part (in this case
+ * LED lights 2024) of the robot. This class is used for LED lights 2023 control providing the
  * following functionalities: 1. Creation and initialization of the LED strip. 2. Reset of
  * Led-related timers. 3. Sending data to the logger. 4. Checking conditions if arm command is
  * running. 5. Color scheme management (change, retrieval, and application) based on various
@@ -24,7 +24,7 @@ import org.littletonrobotics.junction.Logger;
  * subsystems including the battery state, the calibration status of the arm, the robot's mode
  * (Autonomous or Teleop), etc.
  */
-public class Led2023 extends SubsystemBase {
+public class Led2024 extends SubsystemBase {
   public DoubleLEDStrip ledStrip;
 
   private final Timer balanceTimer = new Timer();
@@ -38,7 +38,7 @@ public class Led2023 extends SubsystemBase {
   private static final COLORS_467 BATTERY_LOW_COLOR = COLORS_467.Orange;
   private final SetLeds setLeds = new SetLeds();
   private final VictoryLeds scoreVictoryLeds =
-          new VictoryLeds(COLORS_467.Yellow, COLORS_467.Purple);
+      new VictoryLeds(COLORS_467.Yellow, COLORS_467.Purple);
   private final Rainbows rainbowLed = new Rainbows();
   private final Patterns colorPatterns = new Patterns();
   private final SetThirdLeds setOneThird = new SetThirdLeds();
@@ -83,11 +83,11 @@ public class Led2023 extends SubsystemBase {
     AUTO_SCORE
   }
 
-  public Led2023() {
+  public Led2024() {
     super();
 
     ledStrip =
-            LEDManager.getInstance().createDoubleStrip(RobotConstants.get().led2023LedCount(), false);
+        LEDManager.getInstance().createDoubleStrip(RobotConstants.get().led2024LedCount(), false);
     for (int i = 0; i < ledStrip.getSize(); i++) {
       ledStrip.setRGB(i, 0, 0, 0);
     }
@@ -102,7 +102,7 @@ public class Led2023 extends SubsystemBase {
   }
 
   public void sendData() {
-    for (int i = 0; i < RobotConstants.get().led2023LedCount(); i++) {
+    for (int i = 0; i < RobotConstants.get().led2024LedCount(); i++) {
       Logger.recordOutput("Leds/LEDColor/" + i, ledStrip.getLED(i).toString());
     }
     Logger.recordOutput("Leds/ColorScheme", getColorScheme().toString());
@@ -137,15 +137,14 @@ public class Led2023 extends SubsystemBase {
       return ColorScheme.DEFAULT;
     }
 
-    if (DriverStation.isAutonomousEnabled()) {
-    }
+    if (DriverStation.isAutonomousEnabled()) {}
 
-      if (defaultTimer.hasElapsed(RAINBOW_TIME_AFTER_ENABLE) && !finishedRainbowOnce) {
-        defaultTimer.reset();
-        defaultTimer.stop();
-        finishedRainbowOnce = true;
-      }
-      defaultTimer.start();
+    if (defaultTimer.hasElapsed(RAINBOW_TIME_AFTER_ENABLE) && !finishedRainbowOnce) {
+      defaultTimer.reset();
+      defaultTimer.stop();
+      finishedRainbowOnce = true;
+    }
+    defaultTimer.start();
 
     // Sets default (never used)
     return ColorScheme.DEFAULT;
@@ -158,7 +157,7 @@ public class Led2023 extends SubsystemBase {
         break;
       case RESET_POSE:
         colorPatterns.setBlinkColors(
-                COLORS_467.Orange, COLORS_467.Pink, COLORS_467.Green.getColor());
+            COLORS_467.Orange, COLORS_467.Pink, COLORS_467.Green.getColor());
         break;
       case AUTO_SCORE:
         scoreVictoryLeds.periodic();
@@ -184,17 +183,17 @@ public class Led2023 extends SubsystemBase {
         rainbowTimer.reset();
       }
 
-      for (int i = 0; i < RobotConstants.get().led2023LedCount(); i++) {
+      for (int i = 0; i < RobotConstants.get().led2024LedCount(); i++) {
         ledStrip.setLeftHSB(
-                i,
-                ((int) rainbowColor + (i * 360 / RobotConstants.get().led2023LedCount())) % 360,
-                255,
-                127);
+            i,
+            ((int) rainbowColor + (i * 360 / RobotConstants.get().led2024LedCount())) % 360,
+            255,
+            127);
         ledStrip.setRightHSB(
-                i,
-                ((int) rainbowColor - (i * 360 / RobotConstants.get().led2023LedCount())) % 360,
-                255,
-                127);
+            i,
+            ((int) rainbowColor - (i * 360 / RobotConstants.get().led2024LedCount())) % 360,
+            255,
+            127);
       }
     }
   }

@@ -6,14 +6,14 @@ public class VictoryLeds {
   private static final int FADE_DURATION = 30;
   private static int fadeToWhite = 0;
   SetLeds ledStrip;
-  Led2023.COLORS_467 fgColor;
-  Led2023.COLORS_467 bgColor;
-  private Led2023.COLORS_467 topClr;
-  private Led2023.COLORS_467 bottomClr;
+  Led2024.COLORS_467 fgColor;
+  Led2024.COLORS_467 bgColor;
+  private Led2024.COLORS_467 topClr;
+  private Led2024.COLORS_467 bottomClr;
   private boolean bright = false;
   private int brightness = 5;
 
-  VictoryLeds(Led2023.COLORS_467 fgColor, Led2023.COLORS_467 bgColor) {
+  VictoryLeds(Led2024.COLORS_467 fgColor, Led2024.COLORS_467 bgColor) {
     this.fgColor = fgColor;
     this.bgColor = bgColor;
   }
@@ -45,7 +45,7 @@ public class VictoryLeds {
     if (brightness > FADE_DURATION) {
       fadeToWhite = (brightness - FADE_DURATION) * 5;
     }
-    for (int i = 0; i < RobotConstants.get().led2023LedCount() / 2; i++) {
+    for (int i = 0; i < RobotConstants.get().led2024LedCount() / 2; i++) {
 
       ledStrip.setRGB(
           i,
@@ -53,8 +53,8 @@ public class VictoryLeds {
           Math.min((int) (topClr.green * brightness / FADE_DURATION) + fadeToWhite, 255),
           Math.min((int) (topClr.blue * brightness / FADE_DURATION) + fadeToWhite, 255));
     }
-    for (int i = (int) RobotConstants.get().led2023LedCount() / 2;
-        i < RobotConstants.get().led2023LedCount();
+    for (int i = (int) RobotConstants.get().led2024LedCount() / 2;
+        i < RobotConstants.get().led2024LedCount();
         i++) {
 
       ledStrip.setRGB(
