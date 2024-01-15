@@ -65,7 +65,7 @@ public class Robot extends LoggedRobot {
           Logger.addDataReceiver(new WPILOGWriter(folder));
         }
         if (Constants.getRobot() == Constants.RobotType.ROBOT_2023) {
-          new PowerDistribution(20, ModuleType.kRev);
+          new PowerDistribution(20, ModuleType.kCTRE);
         } else {
           new PowerDistribution(20, ModuleType.kCTRE);
         }
