@@ -75,11 +75,11 @@ public class RobotContainer {
                       .toArray(new frc.lib.io.vision.VisionIO[0]));
           drive =
               new Drive(
-                  new GyroPigeon2(17),
-                  new ModuleIOSparkMAX(4, 3, 13, 0),
-                  new ModuleIOSparkMAX(6, 5, 14, 1),
-                  new ModuleIOSparkMAX(2, 1, 15, 2),
-                  new ModuleIOSparkMAX(8, 7, 16, 3));
+                  new GyroPigeon2(Schematic.GYRO_ID),
+                  new ModuleIOSparkMAX(0),
+                  new ModuleIOSparkMAX(1),
+                  new ModuleIOSparkMAX(2),
+                  new ModuleIOSparkMAX(3));
         }
         case ROBOT_SIMBOT -> {
           drive =
