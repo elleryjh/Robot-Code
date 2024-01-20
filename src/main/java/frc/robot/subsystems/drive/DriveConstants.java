@@ -28,10 +28,10 @@ public class DriveConstants {
         WHEEL_DIAMETER = Units.inchesToMeters(4);
         ABSOLUTE_ANGLE_OFFSET =
             new Rotation2d[] {
-              Rotation2d.fromDegrees(0),
-              Rotation2d.fromDegrees(0),
-              Rotation2d.fromDegrees(0),
-              Rotation2d.fromDegrees(0),
+              Rotation2d.fromDegrees(-67.4),
+              Rotation2d.fromDegrees(42.4),
+              Rotation2d.fromDegrees(169.7),
+              Rotation2d.fromDegrees(101.5),
             };
         DRIVE_GEAR_RATIO = new GearRatio(6.75, 1);
         TURN_GEAR_RATIO = new GearRatio(12.8, 1);
@@ -41,16 +41,16 @@ public class DriveConstants {
         TURN_KD = new TunableNumber("Drive/Module/TurnKD", 0.05);
       }
       case ROBOT_2024A -> {
-        TRACK_WIDTH_X = Units.inchesToMeters(12.75 * 2);
-        TRACK_WIDTH_Y = Units.inchesToMeters(9.25 * 2);
+        TRACK_WIDTH_X = Units.inchesToMeters(11.5 * 2);
+        TRACK_WIDTH_Y = Units.inchesToMeters(11.5 * 2);
         MAX_LINEAR_SPEED = Units.feetToMeters(14.5);
         WHEEL_DIAMETER = Units.inchesToMeters(4);
         ABSOLUTE_ANGLE_OFFSET =
             new Rotation2d[] {
-              Rotation2d.fromDegrees(-67.4),
-              Rotation2d.fromDegrees(42.4),
-              Rotation2d.fromDegrees(169.7),
-              Rotation2d.fromDegrees(101.5),
+              Rotation2d.fromDegrees(0),
+              Rotation2d.fromDegrees(0),
+              Rotation2d.fromDegrees(0),
+              Rotation2d.fromDegrees(0),
             };
         DRIVE_GEAR_RATIO = new GearRatio(6.75, 1);
         TURN_GEAR_RATIO = new GearRatio(12.8, 1);
