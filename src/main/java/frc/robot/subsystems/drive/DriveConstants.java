@@ -48,9 +48,9 @@ public class DriveConstants {
         ABSOLUTE_ANGLE_OFFSET =
             new Rotation2d[] {
               Rotation2d.fromDegrees(-90.8),
-              Rotation2d.fromDegrees(-90.8),
+              Rotation2d.fromDegrees(44.2),
               Rotation2d.fromDegrees(84.5),
-              Rotation2d.fromDegrees(39.2),
+              Rotation2d.fromDegrees(219.2),
             };
         DRIVE_GEAR_RATIO = new GearRatio(6.75, 1);
         TURN_GEAR_RATIO = new GearRatio(12.8, 1);
